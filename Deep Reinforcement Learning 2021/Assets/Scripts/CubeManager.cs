@@ -5,8 +5,7 @@ using UnityEngine;
 
 public class CubeManager : MonoBehaviour
 {
-
-    [SerializeField] public Transform transform;
+    
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private Material blueMat;
     [SerializeField] private Material redMat;
@@ -17,21 +16,35 @@ public class CubeManager : MonoBehaviour
     [HideInInspector] public bool isBlue;
     [HideInInspector] public bool isColored;
 
-    public void changeToBlue()
+
+    public void playerOnePlaying()
     {
-        meshRenderer.material = blueMat;
+        changeColorToBlue();
         isBlue = true;
         isColored = true;
     }
-
-    public void changeToRed()
+    
+    public void playerTwoPlaying()
     {
-        meshRenderer.material = redMat;
+        changeColorToRed();
         isRed = true;
         isColored = true;
+        
+    }
+    
+    
+    public void changeColorToBlue()
+    {
+        meshRenderer.material = blueMat;
+        
     }
 
-    public void changeToWhite()
+    public void changeColorToRed()
+    {
+        meshRenderer.material = redMat;
+    }
+
+    public void changeColorToWhite()
     {
         meshRenderer.material = whiteMat;
         isRed = false;
@@ -39,13 +52,13 @@ public class CubeManager : MonoBehaviour
         isColored = false;
     }
 
-    private void OnMouseOver()
+    /*private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0) && !autoPilote && !isRed && !isBlue)
-            changeToBlue();
+            playerOnePlaying();
 
         if (Input.GetMouseButtonDown(1) && !autoPilote && !isRed && !isBlue)
-            changeToRed();
-    }
+            playerTwoPlaying();
+    }*/
 
 }

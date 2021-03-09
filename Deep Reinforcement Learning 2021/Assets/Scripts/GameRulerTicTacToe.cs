@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 using Random = System.Random;
 
+
 public class GameRulerTicTacToe : MonoBehaviour
 {
     
@@ -21,7 +22,7 @@ public class GameRulerTicTacToe : MonoBehaviour
     private int scoreRouge = 0;
     private int scoreBleu = 0;
     
-    [SerializeField] private List<int> _choicesLeft = new List<int>();
+    [SerializeField] private List<int> _choicesLeft = new List<int>(8);
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +37,7 @@ public class GameRulerTicTacToe : MonoBehaviour
         {
             _choicesLeft.Add(i);
             cubeManagers[i].autoPilote = autoPilote;
-            cubeManagers[i].changeToWhite();
+            cubeManagers[i].changeColorToWhite();
         }
     }
 
@@ -48,13 +49,13 @@ public class GameRulerTicTacToe : MonoBehaviour
         {
             if (isPlayerOne)
             {
-                cubeManagers[_choicesLeft[choice]].changeToBlue();
+                cubeManagers[_choicesLeft[choice]].playerOnePlaying();
                 _choicesLeft.RemoveAt(choice);
                 isPlayerOne = false;
             }
             else
             {
-                cubeManagers[_choicesLeft[choice]].changeToRed();
+                cubeManagers[_choicesLeft[choice]].playerTwoPlaying();
                 _choicesLeft.RemoveAt(choice);
                 isPlayerOne = true;
             }
