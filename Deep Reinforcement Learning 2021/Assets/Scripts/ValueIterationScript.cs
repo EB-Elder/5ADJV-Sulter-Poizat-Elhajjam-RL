@@ -99,8 +99,9 @@ public class ValueIterationScript : MonoBehaviour
             {
                 for (int j = 0; j < largeurGrille; j++)
                 {
-                    if (i != 4 && j != 4)
+                    if (!(i == longueurGrille - 1 && j == largeurGrille - 1))
                     {
+
                         var actions = getPossibleActions(listeEtat[i, j]);
                         float[] scoresAction = new float[actions.Count];
 
@@ -115,7 +116,7 @@ public class ValueIterationScript : MonoBehaviour
                         listeEtat[i, j].value = Mathf.Max(scoresAction);
 
 
-                        Debug.Log("Valeur mise à jour sur la tuile [" + i + "," + j + "] : " + listeEtat[i, j].value);
+                        //Debug.Log("Valeur mise à jour sur la tuile [" + i + "," + j + "] : " + listeEtat[i, j].value);
 
                         delta = Mathf.Max(delta, Mathf.Abs(temp - listeEtat[i, j].value));
                     }
@@ -124,7 +125,7 @@ public class ValueIterationScript : MonoBehaviour
         }
 
         //affichage des résultats
-        DisplayResult();
+        //DisplayResult();
     }
 
     public void policyEvaluation()
@@ -164,14 +165,14 @@ public class ValueIterationScript : MonoBehaviour
 
                 if (listeEtat[i,j].x == x && listeEtat[i, j].y == y)
                 {
-                    Debug.Log("l'état est bien trouvé x : " + x + " y : " + y);
+                    //Debug.Log("l'état est bien trouvé x : " + x + " y : " + y);
                     return listeEtat[i, j];
                 }
 
             }
         }
 
-        Debug.Log("l'état n'a pas été trouvé x : " + x + " y : " + y);
+        //Debug.Log("l'état n'a pas été trouvé x : " + x + " y : " + y);
 
         return listeEtat[0, 0];
 
