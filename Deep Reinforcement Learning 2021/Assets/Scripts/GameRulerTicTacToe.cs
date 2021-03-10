@@ -41,8 +41,6 @@ public class GameRulerTicTacToe : MonoBehaviour
             actualBoard[i].autoPilote = autoPilote;
             actualBoard[i].changeColorToWhite();
         }
-        
-        
     }
 
     void IAController()
@@ -88,6 +86,7 @@ public class GameRulerTicTacToe : MonoBehaviour
                 initGame();
                 _timeCount = 0.0f;
                 scoreRouge++;
+                IAMCTS.isGameOver = true;
                 print($"Bleu : {scoreBleu} - Rouge : {scoreRouge}");
             }
 
@@ -109,6 +108,7 @@ public class GameRulerTicTacToe : MonoBehaviour
                 initGame();
                 _timeCount = 0.0f;
                 scoreBleu++;
+                IAMCTS.isGameOver = true;
                 print($"Bleu : {scoreBleu} - Rouge : {scoreRouge}");
             }
 
@@ -132,6 +132,7 @@ public class GameRulerTicTacToe : MonoBehaviour
                 print("Égalité !");
                 initGame();
                 _timeCount = 0.0f;
+                IAMCTS.isGameOver = true;
                 print($"Bleu : {scoreBleu} - Rouge : {scoreRouge}");
             }
         }
@@ -150,7 +151,6 @@ public class GameRulerTicTacToe : MonoBehaviour
         if (autoPilote)
         {
             //IAController();
-            
         }
         
         EndCondition();

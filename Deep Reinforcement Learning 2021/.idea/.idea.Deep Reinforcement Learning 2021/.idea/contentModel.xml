@@ -11,6 +11,9 @@
           <e p="GameRulerGridWorld.cs" t="Include" />
           <e p="GameRulerTicTacToe.cs" t="Include" />
           <e p="MCTS.cs" t="Include" />
+          <e p="Sokoban" t="Include">
+            <e p="GameManagerScript.cs" t="Include" />
+          </e>
           <e p="ValueIterationScript.cs" t="Include" />
         </e>
       </e>
