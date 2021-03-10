@@ -51,10 +51,10 @@ public class ValueIterationScript : MonoBehaviour
     [SerializeField] private float rewardDeplacement;
     [SerializeField] private float devaluation;
 
-    private Etat[,] listeEtat;
+    public Etat[,] listeEtat;
 
     // Start is called before the first frame update
-    void Initialisation()
+    public void Initialisation()
     {
         listeEtat = new Etat[largeurGrille, longueurGrille];
 
@@ -147,6 +147,29 @@ public class ValueIterationScript : MonoBehaviour
         DisplayResult();
     }
 
+    public Etat getEtatFromPos(int x, int y)
+    {
+
+        for (int i = 0; i < longueurGrille; i++)
+        {
+            for (int j = 0; j < largeurGrille; j++)
+            {
+
+                if (listeEtat[i,j].x == x && listeEtat[i, j].y == y)
+                {
+                    Debug.Log("l'état est bien trouvé x : " + x + " y : " + y);
+                    return listeEtat[i, j];
+                }
+
+            }
+        }
+
+        Debug.Log("l'état n'a pas été trouvé x : " + x + " y : " + y);
+
+        return listeEtat[0, 0];
+
+    }
+
     public bool PolicyImprovement()
     {
         bool policyStable = true;
@@ -205,19 +228,19 @@ public class ValueIterationScript : MonoBehaviour
         {
             case codeAction.BAS:
 
-                return rewardDeplacement + devaluation*listeEtat[e.y - 1, e.x].value;
+                return rewardDeplacement + devaluation*listeEtat[e.x, e.y - 1].value;
 
             case codeAction.DROITE:
 
-                return rewardDeplacement + devaluation*listeEtat[e.y, e.x + 1].value;
+                return rewardDeplacement + devaluation*listeEtat[e.x + 1,e.y].value;
 
             case codeAction.GAUCHE:
 
-                return rewardDeplacement + devaluation*listeEtat[e.y, e.x - 1].value;
+                return rewardDeplacement + devaluation*listeEtat[e.x - 1, e.y].value;
 
             case codeAction.HAUT:
 
-                return rewardDeplacement + devaluation*listeEtat[e.y + 1, e.x].value;
+                return rewardDeplacement + devaluation*listeEtat[e.x, e.y + 1].value;
 
             default:
                 return 0;

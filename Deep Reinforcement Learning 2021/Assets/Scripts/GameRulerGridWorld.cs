@@ -10,8 +10,11 @@ public class GameRulerGridWorld : MonoBehaviour
     [SerializeField] private Transform finishTile;
     [SerializeField] private Transform startingTile;
     [SerializeField] private bool autoPilote;
-    
-    public int IADecision = 0;
+    [SerializeField] ValueIterationScript ia;
+    [SerializeField] private int iaPositionX;
+    [SerializeField] private int iaPositionY;
+
+    public int IADecision = -1;
     
     private bool _canMove = true;
 
@@ -31,6 +34,11 @@ public class GameRulerGridWorld : MonoBehaviour
     void Start()
     {
         player.position = startingTile.position;
+
+        ia.Initialisation();
+
+        ia.ValueIteration();
+
     }
 
     void playerController()
@@ -48,36 +56,102 @@ public class GameRulerGridWorld : MonoBehaviour
 
     void IAController()
     {
+        Etat currentState = ia.getEtatFromPos(iaPositionX, iaPositionY);
+        List<codeAction> actionPossible = ia.getPossibleActions(currentState);
 
-        if (IADecision == 1 && player.position.z < 0)
-        { 
-            player.Translate(0, 0, -10);
-            _canMove = false;
-            IADecision = 0;
-        }
+        float valueMax = -1000000;
 
-        if (IADecision == 2 && player.position.z > -40)
+        codeAction bestChoice = codeAction.HAUT;
+
+        foreach (codeAction action in actionPossible)
         {
-            player.Translate(0, 0, 10);
-            _canMove = false;
-            IADecision = 0;
+            switch (action)
+            {
+                case codeAction.BAS:
+
+                    if (ia.getEtatFromPos(iaPositionX, iaPositionY+1).value > valueMax)
+                    {
+                        valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value;
+                        bestChoice = action;
+                        currentState = ia.getEtatFromPos(iaPositionX, iaPositionY + 1);
+                        iaPositionY++;
+                    }
+                break;
+
+                case codeAction.DROITE:
+
+                    if (ia.getEtatFromPos(iaPositionX+1, iaPositionY).value > valueMax)
+                    {
+                        valueMax = ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value;
+                        bestChoice = action;
+                        currentState = ia.getEtatFromPos(iaPositionX + 1, iaPositionY);
+                        iaPositionX++;
+                    }
+                break;
+
+                case codeAction.GAUCHE:
+
+                    if (ia.getEtatFromPos(iaPositionX-1, iaPositionY).value > valueMax)
+                    {
+                        valueMax = ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value;
+                        bestChoice = action;
+                        currentState = ia.getEtatFromPos(iaPositionX - 1, iaPositionY);
+                        iaPositionX--;
+                    }
+                    break;
+
+                case codeAction.HAUT:
+
+                    if (ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value > valueMax)
+                    {
+                        valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value;
+                        bestChoice = action;
+                        currentState = ia.getEtatFromPos(iaPositionX, iaPositionY - 1);
+                        iaPositionY--;
+                    }
+                    break;
+            }
         }
 
-        if (IADecision == 3 && player.position.x < 0)
+
+
+
+
+        if (bestChoice == codeAction.BAS && player.position.z < 0)
+        { 
+            player.Translate(0, 0, 10);
+            _canMove = true;
+            IADecision = -1;
+            Debug.Log("on va en bas");
+        }
+
+        if (bestChoice == codeAction.HAUT && player.position.z > -40)
+        {
+            player.Translate(0, 0, -10);
+            _canMove = true;
+            IADecision = -1;
+
+            Debug.Log("on va en haut");
+        }
+
+        if (bestChoice == codeAction.DROITE && player.position.x < 0)
         {
             player.Translate(-10, 0, 0);
-            _canMove = false;
-            IADecision = 0;
+            _canMove = true;
+            IADecision = -1;
+            Debug.Log("on va à droite");
         }
 
-        if (IADecision == 4 && player.position.x > -40)
+        if (bestChoice == codeAction.GAUCHE && player.position.x > -40)
         {
             player.Translate(10, 0, 0);
-            _canMove = false;
-            IADecision = 0;
+            _canMove = true;
+            IADecision = -1;
+
+            Debug.Log("on va à gauche");
         }
 
-        if (IADecision == 0)
+        if (IADecision == -1)
             _canMove = true;
         
     }
@@ -85,9 +159,6 @@ public class GameRulerGridWorld : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        
-        
         
         
         if(!autoPilote)
