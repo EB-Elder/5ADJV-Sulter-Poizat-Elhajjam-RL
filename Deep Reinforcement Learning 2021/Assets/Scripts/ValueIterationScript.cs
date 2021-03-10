@@ -62,7 +62,7 @@ public class ValueIterationScript : MonoBehaviour
         {
             for(int j = 0; j < largeurGrille; j++)
             {
-                if(i == largeurGrille && j == longueurGrille)
+                if(i == largeurGrille-1 && j == longueurGrille-1)
                 {
                     listeEtat[i, j] = new Etat(j, i, true);
                 }
@@ -80,15 +80,15 @@ public class ValueIterationScript : MonoBehaviour
 
         if (e.x != 0) l.Add(codeAction.GAUCHE);
         if (e.x < largeurGrille - 1) l.Add(codeAction.DROITE);
-        if (e.y != 0) l.Add(codeAction.HAUT);
-        if (e.y < longueurGrille - 1) l.Add(codeAction.BAS);
+        if (e.y != 0) l.Add(codeAction.BAS);
+        if (e.y < longueurGrille - 1) l.Add(codeAction.HAUT);
 
         return l;
     }
 
     public void ValueIteration()
     {
-        float delta = 0.0f;
+        float delta = 2.0f;
         float theta = 0.001f;
 
         while(delta > theta)
@@ -99,19 +99,26 @@ public class ValueIterationScript : MonoBehaviour
             {
                 for (int j = 0; j < largeurGrille; j++)
                 {
-                    var actions = getPossibleActions(listeEtat[i, j]);
-                    float[] scoresAction = new float[actions.Count];
-
-                    var temp = listeEtat[i, j].value;
-
-                    for (int z = 0; z < actions.Count; z++)
+                    if (i != 4 && j != 4)
                     {
-                        scoresAction[z] = GetStateValue(actions[z], listeEtat[i, j]);
+                        var actions = getPossibleActions(listeEtat[i, j]);
+                        float[] scoresAction = new float[actions.Count];
+
+                        var temp = listeEtat[i, j].value;
+
+                        for (int z = 0; z < actions.Count; z++)
+                        {
+                            scoresAction[z] = GetStateValue(actions[z], listeEtat[i, j]);
+                        }
+
+
+                        listeEtat[i, j].value = Mathf.Max(scoresAction);
+
+
+                        Debug.Log("Valeur mise à jour sur la tuile [" + i + "," + j + "] : " + listeEtat[i, j].value);
+
+                        delta = Mathf.Max(delta, Mathf.Abs(temp - listeEtat[i, j].value));
                     }
-
-                    listeEtat[i, j].value = Mathf.Max(scoresAction);
-
-                    delta = Mathf.Max(delta, Mathf.Abs(temp - listeEtat[i, j].value));
                 }
             }
         }
@@ -122,7 +129,7 @@ public class ValueIterationScript : MonoBehaviour
 
     public void policyEvaluation()
     {
-        float delta = 0.0f;
+        float delta = 2.0f;
         float theta = 0.001f;
 
         while (delta > theta)
