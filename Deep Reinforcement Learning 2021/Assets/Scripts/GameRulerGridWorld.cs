@@ -14,6 +14,36 @@ public class GameRulerGridWorld : MonoBehaviour
     [SerializeField] private int iaPositionX;
     [SerializeField] private int iaPositionY;
 
+    [SerializeField] private TextMesh plane00;
+    [SerializeField] private TextMesh plane01;
+    [SerializeField] private TextMesh plane02;
+    [SerializeField] private TextMesh plane03;
+    [SerializeField] private TextMesh plane04;
+
+    [SerializeField] private TextMesh plane10;
+    [SerializeField] private TextMesh plane11;
+    [SerializeField] private TextMesh plane12;
+    [SerializeField] private TextMesh plane13;
+    [SerializeField] private TextMesh plane14;
+
+    [SerializeField] private TextMesh plane20;
+    [SerializeField] private TextMesh plane21;
+    [SerializeField] private TextMesh plane22;
+    [SerializeField] private TextMesh plane23;
+    [SerializeField] private TextMesh plane24;
+
+    [SerializeField] private TextMesh plane30;
+    [SerializeField] private TextMesh plane31;
+    [SerializeField] private TextMesh plane32;
+    [SerializeField] private TextMesh plane33;
+    [SerializeField] private TextMesh plane34;
+
+    [SerializeField] private TextMesh plane40;
+    [SerializeField] private TextMesh plane41;
+    [SerializeField] private TextMesh plane42;
+    [SerializeField] private TextMesh plane43;
+    [SerializeField] private TextMesh plane44;
+
     public int IADecision = -1;
     
     private bool _canMove = true;
@@ -21,14 +51,42 @@ public class GameRulerGridWorld : MonoBehaviour
     private float _timeCount;
     private int _actualIndex;
     private float _timeMax = 0.1f;
+    private bool fini = false;
     
-    private List<int> _decisionArray = new List<int>()
+    public void displayValueIG()
     {
-        1, 4, 4, 1, 1, 4, 2, 2, 4, 1, 2, 4, 2, 1, 3, 3, 4, 3, 2, 4, 1, 4, 2, 3, 1, 2, 2, 4, 1,
-        4, 4, 4, 1, 1, 1, 2, 2, 1, 1, 3, 4, 4, 4, 1, 2, 2, 3, 4, 1, 4, 1, 2, 1, 2, 3, 4, 2, 3,
-        4, 4, 4, 2, 4, 2, 1, 1, 2, 3, 3, 1, 4, 1, 3, 2, 4, 3, 2, 3, 1, 1, 3, 1, 4, 3, 3, 1, 2,
-        2, 3, 3, 2, 3, 3, 4, 3, 2, 3, 1, 1, 1
-    }; 
+
+        plane00.text = ia.listeEtat[0, 0].value.ToString();
+        plane01.text = ia.listeEtat[0, 1].value.ToString();
+        plane02.text = ia.listeEtat[0, 2].value.ToString();
+        plane03.text = ia.listeEtat[0, 3].value.ToString();
+        plane04.text = ia.listeEtat[0, 4].value.ToString();
+
+        plane10.text = ia.listeEtat[1, 0].value.ToString();
+        plane11.text = ia.listeEtat[1, 1].value.ToString();
+        plane12.text = ia.listeEtat[1, 2].value.ToString();
+        plane13.text = ia.listeEtat[1, 3].value.ToString();
+        plane14.text = ia.listeEtat[1, 4].value.ToString();
+
+        plane20.text = ia.listeEtat[2, 0].value.ToString();
+        plane21.text = ia.listeEtat[2, 1].value.ToString();
+        plane22.text = ia.listeEtat[2, 2].value.ToString();
+        plane23.text = ia.listeEtat[2, 3].value.ToString();
+        plane24.text = ia.listeEtat[2, 4].value.ToString();
+
+        plane30.text = ia.listeEtat[3, 0].value.ToString();
+        plane31.text = ia.listeEtat[3, 1].value.ToString();
+        plane32.text = ia.listeEtat[3, 2].value.ToString();
+        plane33.text = ia.listeEtat[3, 3].value.ToString();
+        plane34.text = ia.listeEtat[3, 4].value.ToString();
+
+        plane40.text = ia.listeEtat[4, 0].value.ToString();
+        plane41.text = ia.listeEtat[4, 1].value.ToString();
+        plane42.text = ia.listeEtat[4, 2].value.ToString();
+        plane43.text = ia.listeEtat[4, 3].value.ToString();
+        plane44.text = ia.listeEtat[4, 4].value.ToString();
+
+    }
     
     // Start is called before the first frame update
     void Start()
@@ -36,14 +94,12 @@ public class GameRulerGridWorld : MonoBehaviour
         player.position = startingTile.position;
 
         ia.Initialisation();
-
         ia.ValueIteration();
-
+        displayValueIG();
     }
 
     void playerController()
-    {
-        
+    {       
         if(Input.GetKeyDown(KeyCode.UpArrow) && player.position.z < 0)
             player.Translate(0, 0, -10);
         if(Input.GetKeyDown(KeyCode.DownArrow) && player.position.z > -40)
@@ -69,86 +125,148 @@ public class GameRulerGridWorld : MonoBehaviour
             {
                 case codeAction.BAS:
 
-                    if (ia.getEtatFromPos(iaPositionX, iaPositionY+1).value > valueMax)
+                    if (ia.getEtatFromPos(iaPositionX, iaPositionY-1).value >= valueMax)
                     {
-                        valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value;
-                        bestChoice = action;
-                        currentState = ia.getEtatFromPos(iaPositionX, iaPositionY + 1);
-                        iaPositionY++;
+                        if(ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value == valueMax)
+                        {
+                            bool change = false;
+                            float coin = UnityEngine.Random.Range(0.0f, 1.0f);
+
+                            if (coin > 0.5f) change = true;
+
+                            if (change)
+                            {
+                                valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value;
+                                bestChoice = action;
+                                currentState = ia.getEtatFromPos(iaPositionX, iaPositionY - 1);
+                            }
+                        }
+                        else
+                        {
+                            valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value;
+                            bestChoice = action;
+                            currentState = ia.getEtatFromPos(iaPositionX, iaPositionY - 1);
+                        }                        
                     }
                 break;
 
                 case codeAction.DROITE:
 
-                    if (ia.getEtatFromPos(iaPositionX+1, iaPositionY).value > valueMax)
+                    if (ia.getEtatFromPos(iaPositionX+1, iaPositionY).value >= valueMax)
                     {
-                        valueMax = ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value;
-                        bestChoice = action;
-                        currentState = ia.getEtatFromPos(iaPositionX + 1, iaPositionY);
-                        iaPositionX++;
+                        if(ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value == valueMax)
+                        {
+                            bool change = false;
+                            float coin = UnityEngine.Random.Range(0.0f, 1.0f);
+
+                            if (coin > 0.5f) change = true;
+
+                            if (change)
+                            {
+                                valueMax = ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value;
+                                bestChoice = action;
+                                currentState = ia.getEtatFromPos(iaPositionX + 1, iaPositionY);
+                            }
+                        }
+                        else
+                        {
+                            valueMax = ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value;
+                            bestChoice = action;
+                            currentState = ia.getEtatFromPos(iaPositionX + 1, iaPositionY);
+                        }                      
                     }
                 break;
 
                 case codeAction.GAUCHE:
 
-                    if (ia.getEtatFromPos(iaPositionX-1, iaPositionY).value > valueMax)
+                    if (ia.getEtatFromPos(iaPositionX-1, iaPositionY).value >= valueMax)
                     {
-                        valueMax = ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value;
-                        bestChoice = action;
-                        currentState = ia.getEtatFromPos(iaPositionX - 1, iaPositionY);
-                        iaPositionX--;
+                        if(ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value == valueMax)
+                        {
+                            bool change = false;
+                            float coin = UnityEngine.Random.Range(0.0f, 1.0f);
+
+                            if (coin > 0.5f) change = true;
+
+                            if (change)
+                            {
+                                valueMax = ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value;
+                                bestChoice = action;
+                                currentState = ia.getEtatFromPos(iaPositionX - 1, iaPositionY);
+                            }
+                        }
+                        else
+                        {
+                            valueMax = ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value;
+                            bestChoice = action;
+                            currentState = ia.getEtatFromPos(iaPositionX - 1, iaPositionY);
+                        }                                            
                     }
                     break;
 
                 case codeAction.HAUT:
 
-                    if (ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value > valueMax)
+                    if (ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value >= valueMax)
                     {
-                        valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value;
-                        bestChoice = action;
-                        currentState = ia.getEtatFromPos(iaPositionX, iaPositionY - 1);
-                        iaPositionY--;
+                        if(ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value == valueMax)
+                        {
+                            bool change = false;
+                            float coin = UnityEngine.Random.Range(0.0f, 1.0f);
+
+                            if (coin > 0.5f) change = true;
+
+                            if (change)
+                            {
+                                valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value;
+                                bestChoice = action;
+                                currentState = ia.getEtatFromPos(iaPositionX, iaPositionY + 1);
+                            }
+                        }
+                        else
+                        {
+                            valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value;
+                            bestChoice = action;
+                            currentState = ia.getEtatFromPos(iaPositionX, iaPositionY + 1);
+                        }                                           
                     }
                     break;
             }
         }
 
-
-
-
-
-        if (bestChoice == codeAction.BAS && player.position.z < 0)
+        if (bestChoice == codeAction.BAS /*&& player.position.z < 0*/)
         { 
             player.Translate(0, 0, 10);
             _canMove = true;
             IADecision = -1;
-            Debug.Log("on va en bas");
+
+            iaPositionY--;
         }
 
-        if (bestChoice == codeAction.HAUT && player.position.z > -40)
+        if (bestChoice == codeAction.HAUT /*&& player.position.z > -40*/)
         {
             player.Translate(0, 0, -10);
             _canMove = true;
             IADecision = -1;
 
-            Debug.Log("on va en haut");
+
+            iaPositionY++;
         }
 
-        if (bestChoice == codeAction.DROITE && player.position.x < 0)
+        if (bestChoice == codeAction.DROITE /*&& player.position.x < 0*/)
         {
             player.Translate(-10, 0, 0);
             _canMove = true;
             IADecision = -1;
-            Debug.Log("on va à droite");
+            iaPositionX++;
         }
 
-        if (bestChoice == codeAction.GAUCHE && player.position.x > -40)
+        if (bestChoice == codeAction.GAUCHE /*&& player.position.x > -40*/)
         {
             player.Translate(10, 0, 0);
             _canMove = true;
             IADecision = -1;
 
-            Debug.Log("on va à gauche");
+            iaPositionX--;
         }
 
         if (IADecision == -1)
@@ -158,37 +276,32 @@ public class GameRulerGridWorld : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
-        
-        if(!autoPilote)
-            playerController();
-        else
+    {  
+        if(!fini)
         {
-            _timeCount += Time.deltaTime;
-            if (_timeCount >= _timeMax)
+            if (!autoPilote)
+                playerController();
+            else
             {
-                if (_actualIndex >= _decisionArray.Count)
-                    _actualIndex = 0;
-            
-                IADecision = _decisionArray[_actualIndex];
-            
-                _actualIndex++;
-                _timeCount = 0.0f;
+                _timeCount += Time.deltaTime;
+                if (_timeCount >= _timeMax)
+                {
+                    _timeCount = 0.0f;
+                }
+                IAController();
             }
-            IAController();
-        }
-        
-        if (player.position.x >= finishTile.position.x-1 && 
-            player.position.z >= finishTile.position.z-1)
-        {
-            print("Done");
 
-            #if UNITY_EDITOR
+            if (player.position.x >= finishTile.position.x - 1 &&
+                player.position.z >= finishTile.position.z - 1)
+            {
+                print("Done");
+                fini = true;
+                /*#if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
-            #else
+                #else
                 Application.Quit();
-            #endif
+                #endif*/
+            }
         }
     }
 }
