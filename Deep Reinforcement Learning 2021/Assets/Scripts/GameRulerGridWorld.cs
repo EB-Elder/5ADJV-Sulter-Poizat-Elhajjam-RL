@@ -125,46 +125,109 @@ public class GameRulerGridWorld : MonoBehaviour
             {
                 case codeAction.BAS:
 
-                    if (ia.getEtatFromPos(iaPositionX, iaPositionY-1).value > valueMax)
+                    if (ia.getEtatFromPos(iaPositionX, iaPositionY-1).value >= valueMax)
                     {
-                        valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value;
-                        bestChoice = action;
-                        currentState = ia.getEtatFromPos(iaPositionX, iaPositionY - 1);
-                        
-                        
+                        if(ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value == valueMax)
+                        {
+                            bool change = false;
+                            float coin = UnityEngine.Random.Range(0.0f, 1.0f);
+
+                            if (coin > 0.5f) change = true;
+
+                            if (change)
+                            {
+                                valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value;
+                                bestChoice = action;
+                                currentState = ia.getEtatFromPos(iaPositionX, iaPositionY - 1);
+                            }
+                        }
+                        else
+                        {
+                            valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY - 1).value;
+                            bestChoice = action;
+                            currentState = ia.getEtatFromPos(iaPositionX, iaPositionY - 1);
+                        }                        
                     }
                 break;
 
                 case codeAction.DROITE:
 
-                    if (ia.getEtatFromPos(iaPositionX+1, iaPositionY).value > valueMax)
+                    if (ia.getEtatFromPos(iaPositionX+1, iaPositionY).value >= valueMax)
                     {
-                        valueMax = ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value;
-                        bestChoice = action;
-                        currentState = ia.getEtatFromPos(iaPositionX + 1, iaPositionY);
-                        
+                        if(ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value == valueMax)
+                        {
+                            bool change = false;
+                            float coin = UnityEngine.Random.Range(0.0f, 1.0f);
+
+                            if (coin > 0.5f) change = true;
+
+                            if (change)
+                            {
+                                valueMax = ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value;
+                                bestChoice = action;
+                                currentState = ia.getEtatFromPos(iaPositionX + 1, iaPositionY);
+                            }
+                        }
+                        else
+                        {
+                            valueMax = ia.getEtatFromPos(iaPositionX + 1, iaPositionY).value;
+                            bestChoice = action;
+                            currentState = ia.getEtatFromPos(iaPositionX + 1, iaPositionY);
+                        }                      
                     }
                 break;
 
                 case codeAction.GAUCHE:
 
-                    if (ia.getEtatFromPos(iaPositionX-1, iaPositionY).value > valueMax)
+                    if (ia.getEtatFromPos(iaPositionX-1, iaPositionY).value >= valueMax)
                     {
-                        valueMax = ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value;
-                        bestChoice = action;
-                        currentState = ia.getEtatFromPos(iaPositionX - 1, iaPositionY);
-                        
+                        if(ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value == valueMax)
+                        {
+                            bool change = false;
+                            float coin = UnityEngine.Random.Range(0.0f, 1.0f);
+
+                            if (coin > 0.5f) change = true;
+
+                            if (change)
+                            {
+                                valueMax = ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value;
+                                bestChoice = action;
+                                currentState = ia.getEtatFromPos(iaPositionX - 1, iaPositionY);
+                            }
+                        }
+                        else
+                        {
+                            valueMax = ia.getEtatFromPos(iaPositionX - 1, iaPositionY).value;
+                            bestChoice = action;
+                            currentState = ia.getEtatFromPos(iaPositionX - 1, iaPositionY);
+                        }                                            
                     }
                     break;
 
                 case codeAction.HAUT:
 
-                    if (ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value > valueMax)
+                    if (ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value >= valueMax)
                     {
-                        valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value;
-                        bestChoice = action;
-                        currentState = ia.getEtatFromPos(iaPositionX, iaPositionY + 1);
-                        
+                        if(ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value == valueMax)
+                        {
+                            bool change = false;
+                            float coin = UnityEngine.Random.Range(0.0f, 1.0f);
+
+                            if (coin > 0.5f) change = true;
+
+                            if (change)
+                            {
+                                valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value;
+                                bestChoice = action;
+                                currentState = ia.getEtatFromPos(iaPositionX, iaPositionY + 1);
+                            }
+                        }
+                        else
+                        {
+                            valueMax = ia.getEtatFromPos(iaPositionX, iaPositionY + 1).value;
+                            bestChoice = action;
+                            currentState = ia.getEtatFromPos(iaPositionX, iaPositionY + 1);
+                        }                                           
                     }
                     break;
             }
