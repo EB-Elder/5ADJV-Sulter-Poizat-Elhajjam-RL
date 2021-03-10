@@ -52,6 +52,9 @@ public class ValueIterationScript : MonoBehaviour
     [SerializeField] private float devaluation;
 
     public Etat[,] listeEtat;
+    public List<Etat> etatsPieges = new List<Etat>();
+    [SerializeField] private List<Vector2> coordonneePiege = new List<Vector2>();
+
 
     // Start is called before the first frame update
     public void Initialisation()
@@ -68,6 +71,12 @@ public class ValueIterationScript : MonoBehaviour
                 }
                 else listeEtat[i, j] = new Etat(j, i, false);
             }
+        }
+
+        foreach (Vector2 coordonnee in coordonneePiege)
+        {
+            listeEtat[(int)coordonnee.x, (int)coordonnee.y].value = -1500;
+            etatsPieges.Add(listeEtat[(int)coordonnee.x, (int)coordonnee.y]);
         }
     }
 
@@ -99,7 +108,7 @@ public class ValueIterationScript : MonoBehaviour
             {
                 for (int j = 0; j < largeurGrille; j++)
                 {
-                    if (!(i == longueurGrille - 1 && j == largeurGrille - 1))
+                    if (!(i == longueurGrille - 1 && j == largeurGrille - 1) && !(etatsPieges.Contains(listeEtat[i, j])) )
                     {
 
                         var actions = getPossibleActions(listeEtat[i, j]);

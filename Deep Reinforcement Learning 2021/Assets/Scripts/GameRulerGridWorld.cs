@@ -131,6 +131,7 @@ public class GameRulerGridWorld : MonoBehaviour
                         bestChoice = action;
                         currentState = ia.getEtatFromPos(iaPositionX, iaPositionY - 1);
                         
+                        
                     }
                 break;
 
