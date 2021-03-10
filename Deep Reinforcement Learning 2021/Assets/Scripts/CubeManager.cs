@@ -17,16 +17,18 @@ public class CubeManager : MonoBehaviour
     [HideInInspector] public bool isColored;
 
 
-    public void playerOnePlaying()
+    public void playerOnePlaying(bool isSimulated = false)
     {
-        changeColorToBlue();
+        if(!isSimulated)
+            changeColorToBlue();
         isBlue = true;
         isColored = true;
     }
     
-    public void playerTwoPlaying()
+    public void playerTwoPlaying(bool isSimulated = false)
     {
-        changeColorToRed();
+        if (!isSimulated)
+            changeColorToRed();
         isRed = true;
         isColored = true;
         

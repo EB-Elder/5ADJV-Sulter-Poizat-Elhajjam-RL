@@ -8,8 +8,6 @@ using Random = System.Random;
 
 public class GameRulerTicTacToe : MonoBehaviour
 {
-    
-    [SerializeField] private CubeManager[] cubeManagers;
     [SerializeField] private bool autoPilote = false;
 
     private Random generator = new Random();
@@ -21,24 +19,30 @@ public class GameRulerTicTacToe : MonoBehaviour
 
     private int scoreRouge = 0;
     private int scoreBleu = 0;
+
+    [SerializeField] private MCTS IAMCTS;
     
     [SerializeField] private List<int> _choicesLeft = new List<int>(8);
+    [SerializeField] private List<CubeManager> actualBoard = new List<CubeManager>(8);
 
     // Start is called before the first frame update
     void Start()
     {
+        IAMCTS.initMCTS(_choicesLeft, actualBoard);
         initGame();
     }
 
     void initGame()
     {
         _choicesLeft.Clear();
-        for (int i = 0; i < cubeManagers.Length; i++)
+        for (int i = 0; i < actualBoard.Count; i++)
         {
             _choicesLeft.Add(i);
-            cubeManagers[i].autoPilote = autoPilote;
-            cubeManagers[i].changeColorToWhite();
+            actualBoard[i].autoPilote = autoPilote;
+            actualBoard[i].changeColorToWhite();
         }
+        
+        
     }
 
     void IAController()
@@ -49,13 +53,13 @@ public class GameRulerTicTacToe : MonoBehaviour
         {
             if (isPlayerOne)
             {
-                cubeManagers[_choicesLeft[choice]].playerOnePlaying();
+                actualBoard[_choicesLeft[choice]].playerOnePlaying();
                 _choicesLeft.RemoveAt(choice);
                 isPlayerOne = false;
             }
             else
             {
-                cubeManagers[_choicesLeft[choice]].playerTwoPlaying();
+                actualBoard[_choicesLeft[choice]].playerTwoPlaying();
                 _choicesLeft.RemoveAt(choice);
                 isPlayerOne = true;
             }
@@ -69,14 +73,14 @@ public class GameRulerTicTacToe : MonoBehaviour
     void EndCondition()
     {
         
-        if (cubeManagers[0].isRed && cubeManagers[1].isRed && cubeManagers[2].isRed ||
-            cubeManagers[3].isRed && cubeManagers[4].isRed && cubeManagers[5].isRed ||
-            cubeManagers[6].isRed && cubeManagers[7].isRed && cubeManagers[8].isRed ||
-            cubeManagers[0].isRed && cubeManagers[4].isRed && cubeManagers[8].isRed ||
-            cubeManagers[6].isRed && cubeManagers[4].isRed && cubeManagers[2].isRed ||
-            cubeManagers[0].isRed && cubeManagers[3].isRed && cubeManagers[6].isRed ||
-            cubeManagers[1].isRed && cubeManagers[4].isRed && cubeManagers[7].isRed ||
-            cubeManagers[2].isRed && cubeManagers[5].isRed && cubeManagers[8].isRed )
+        if (actualBoard[0].isRed && actualBoard[1].isRed && actualBoard[2].isRed ||
+            actualBoard[3].isRed && actualBoard[4].isRed && actualBoard[5].isRed ||
+            actualBoard[6].isRed && actualBoard[7].isRed && actualBoard[8].isRed ||
+            actualBoard[0].isRed && actualBoard[4].isRed && actualBoard[8].isRed ||
+            actualBoard[6].isRed && actualBoard[4].isRed && actualBoard[2].isRed ||
+            actualBoard[0].isRed && actualBoard[3].isRed && actualBoard[6].isRed ||
+            actualBoard[1].isRed && actualBoard[4].isRed && actualBoard[7].isRed ||
+            actualBoard[2].isRed && actualBoard[5].isRed && actualBoard[8].isRed )
         {
             _timeCount += Time.deltaTime;
             if (_timeCount >= _endTime)
@@ -90,14 +94,14 @@ public class GameRulerTicTacToe : MonoBehaviour
             
         }
         
-        if (cubeManagers[0].isBlue && cubeManagers[1].isBlue && cubeManagers[2].isBlue ||
-            cubeManagers[3].isBlue && cubeManagers[4].isBlue && cubeManagers[5].isBlue ||
-            cubeManagers[6].isBlue && cubeManagers[7].isBlue && cubeManagers[8].isBlue ||
-            cubeManagers[0].isBlue && cubeManagers[4].isBlue && cubeManagers[8].isBlue ||
-            cubeManagers[6].isBlue && cubeManagers[4].isBlue && cubeManagers[2].isBlue ||
-            cubeManagers[0].isBlue && cubeManagers[3].isBlue && cubeManagers[6].isBlue ||
-            cubeManagers[1].isBlue && cubeManagers[4].isBlue && cubeManagers[7].isBlue ||
-            cubeManagers[2].isBlue && cubeManagers[5].isBlue && cubeManagers[8].isBlue )
+        if (actualBoard[0].isBlue && actualBoard[1].isBlue && actualBoard[2].isBlue ||
+            actualBoard[3].isBlue && actualBoard[4].isBlue && actualBoard[5].isBlue ||
+            actualBoard[6].isBlue && actualBoard[7].isBlue && actualBoard[8].isBlue ||
+            actualBoard[0].isBlue && actualBoard[4].isBlue && actualBoard[8].isBlue ||
+            actualBoard[6].isBlue && actualBoard[4].isBlue && actualBoard[2].isBlue ||
+            actualBoard[0].isBlue && actualBoard[3].isBlue && actualBoard[6].isBlue ||
+            actualBoard[1].isBlue && actualBoard[4].isBlue && actualBoard[7].isBlue ||
+            actualBoard[2].isBlue && actualBoard[5].isBlue && actualBoard[8].isBlue )
         {
             _timeCount += Time.deltaTime;
             if (_timeCount >= _endTime)
@@ -111,15 +115,15 @@ public class GameRulerTicTacToe : MonoBehaviour
             
         }
 
-        if (cubeManagers[0].isColored &&
-            cubeManagers[1].isColored &&
-            cubeManagers[2].isColored &&
-            cubeManagers[3].isColored &&
-            cubeManagers[4].isColored &&
-            cubeManagers[5].isColored &&
-            cubeManagers[6].isColored &&
-            cubeManagers[7].isColored &&
-            cubeManagers[8].isColored)
+        if (actualBoard[0].isColored &&
+            actualBoard[1].isColored &&
+            actualBoard[2].isColored &&
+            actualBoard[3].isColored &&
+            actualBoard[4].isColored &&
+            actualBoard[5].isColored &&
+            actualBoard[6].isColored &&
+            actualBoard[7].isColored &&
+            actualBoard[8].isColored)
         {
             _timeCount += Time.deltaTime;
             if (_timeCount >= _endTime)
@@ -138,14 +142,15 @@ public class GameRulerTicTacToe : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < cubeManagers.Length; i++)
+        for (int i = 0; i < actualBoard.Count; i++)
         {
-            cubeManagers[i].autoPilote = autoPilote;
+            actualBoard[i].autoPilote = autoPilote;
         }
 
         if (autoPilote)
         {
-            IAController();
+            //IAController();
+            
         }
         
         EndCondition();
