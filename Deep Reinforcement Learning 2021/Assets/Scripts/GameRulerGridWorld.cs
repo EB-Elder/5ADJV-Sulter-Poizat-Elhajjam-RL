@@ -157,45 +157,48 @@ public class GameRulerGridWorld : MonoBehaviour
         ia.listeEtat[4, 3].stratDisplayer = strat43;
         ia.listeEtat[4, 4].stratDisplayer = strat44;
 
-
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < ia.longueurGrille; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < ia.largeurGrille; j++)
             {
+                var v = new Vector2(i, j);
 
-                switch (ia.listeEtat[i,j].strategie)
+                if(!(ia.coordonneePiege.Contains(v)))
                 {
-                    case codeAction.BAS:
+                    if((i != ia.longueurArrivee || j != ia.largeurArrivee))
+                    {
+                        switch (ia.listeEtat[i, j].strategie)
+                        {
+                            case codeAction.BAS:
 
-                        ia.listeEtat[i, j].stratDisplayer.material = textureBas;
+                                ia.listeEtat[i, j].stratDisplayer.material = textureBas;
 
-                        break;
-
-
-                    case codeAction.HAUT:
-
-                        ia.listeEtat[i, j].stratDisplayer.material= textureHaut;
-
-                        break;
+                                break;
 
 
-                    case codeAction.GAUCHE:
+                            case codeAction.HAUT:
 
-                        ia.listeEtat[i, j].stratDisplayer.material = textureGauche;
+                                ia.listeEtat[i, j].stratDisplayer.material = textureHaut;
 
-                        break;
+                                break;
 
-                    case codeAction.DROITE:
 
-                        ia.listeEtat[i, j].stratDisplayer.material = textureDroite;
+                            case codeAction.GAUCHE:
 
-                        break;
+                                ia.listeEtat[i, j].stratDisplayer.material = textureGauche;
+
+                                break;
+
+                            case codeAction.DROITE:
+
+                                ia.listeEtat[i, j].stratDisplayer.material = textureDroite;
+
+                                break;
+                        }
+                    }
                 }
-
             }
-        }
-
-            
+        }      
     }
 
         
@@ -215,7 +218,7 @@ public class GameRulerGridWorld : MonoBehaviour
         }
 
         //ia.ValueIteration();
-        //displayValueIG();
+        displayValueIG();
         displayStratIG();
     }
 

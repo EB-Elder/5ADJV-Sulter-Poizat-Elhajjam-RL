@@ -40,23 +40,20 @@ public struct Etat
     }
 }
 
-
-
-
 public class ValueIterationScript : MonoBehaviour
 {
-    [SerializeField] private int largeurGrille;
-    [SerializeField] private int longueurGrille;
+    [SerializeField] public int largeurGrille;
+    [SerializeField] public int longueurGrille;
 
-    [SerializeField] private int largeurArrivee;
-    [SerializeField] private int longueurArrivee;
+    [SerializeField] public int largeurArrivee;
+    [SerializeField] public int longueurArrivee;
 
     [SerializeField] private float rewardDeplacement;
     [SerializeField] private float devaluation;
 
     public Etat[,] listeEtat;
     public List<Etat> etatsPieges = new List<Etat>();
-    [SerializeField] private List<Vector2> coordonneePiege = new List<Vector2>();
+    [SerializeField] public List<Vector2> coordonneePiege = new List<Vector2>();
 
 
     // Start is called before the first frame update
@@ -90,10 +87,34 @@ public class ValueIterationScript : MonoBehaviour
 
         if (e.x == largeurArrivee && e.y == longueurArrivee) return l;
 
-        if (e.x != 0) l.Add(codeAction.GAUCHE);
-        if (e.x < largeurGrille - 1) l.Add(codeAction.DROITE);
-        if (e.y != 0) l.Add(codeAction.BAS);
-        if (e.y < longueurGrille - 1) l.Add(codeAction.HAUT);
+        if (e.x != 0)
+        {
+            if(!etatsPieges.Contains(listeEtat[e.x - 1, e.y]))
+            {
+                l.Add(codeAction.GAUCHE);
+            }
+        }
+        if (e.x < largeurGrille - 1)
+        {
+            if(!etatsPieges.Contains(listeEtat[e.x + 1, e.y]))
+            {
+                l.Add(codeAction.DROITE);
+            }
+        }
+        if (e.y != 0)
+        {
+            if(!etatsPieges.Contains(listeEtat[e.x, e.y - 1]))
+            {
+                l.Add(codeAction.BAS);
+            } 
+        }
+        if (e.y < longueurGrille - 1)
+        {
+            if(!etatsPieges.Contains(listeEtat[e.x, e.y + 1]))
+            {
+                l.Add(codeAction.HAUT);
+            }
+        }
 
         return l;
     }
@@ -153,16 +174,17 @@ public class ValueIterationScript : MonoBehaviour
             {
                 for (int j = 0; j < largeurGrille; j++)
                 {
+                    if (!(i == longueurArrivee && j == largeurArrivee) && !(etatsPieges.Contains(listeEtat[i, j])))
+                    {
+                        var temp = listeEtat[i, j].value;
 
-                    var temp = listeEtat[i, j].value;
+                        listeEtat[i, j].value = GetStateValue(listeEtat[i, j].strategie, listeEtat[i, j]);
 
-                    listeEtat[i, j].value = GetStateValue(listeEtat[i, j].strategie, listeEtat[i, j]);
-
-                    delta = Mathf.Max(delta, Mathf.Abs(temp - listeEtat[i, j].value));
+                        delta = Mathf.Max(delta, Mathf.Abs(temp - listeEtat[i, j].value));
+                    }
                 }
             }
         }
-
     }
 
     public Etat getEtatFromPos(int x, int y)
@@ -218,14 +240,11 @@ public class ValueIterationScript : MonoBehaviour
                     {
                         policyStable = false;
                     }
-
                 }
-
             }
         }
 
         return policyStable;
-
     }
 
     public void DisplayResult()
@@ -245,8 +264,6 @@ public class ValueIterationScript : MonoBehaviour
 
     public float GetStateValue(codeAction a, Etat e)
     {
-        
-
         switch(a)
         {
             case codeAction.BAS:

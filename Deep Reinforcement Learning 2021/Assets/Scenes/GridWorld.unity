@@ -1785,7 +1785,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f05871dab3872364c9a35994d95570b2, type: 2}
+  - {fileID: 2100000, guid: 0f8c1e1d93da93442a1dca120150216d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2871,7 +2871,7 @@ MonoBehaviour:
   rewardDeplacement: -1
   devaluation: 0.9
   coordonneePiege:
-  - {x: 2, y: 1}
+  - {x: 2, y: 0}
   - {x: 1, y: 2}
   - {x: 2, y: 4}
 --- !u!1 &1262711834
@@ -4036,7 +4036,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0f8c1e1d93da93442a1dca120150216d, type: 2}
+  - {fileID: 2100000, guid: f05871dab3872364c9a35994d95570b2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
