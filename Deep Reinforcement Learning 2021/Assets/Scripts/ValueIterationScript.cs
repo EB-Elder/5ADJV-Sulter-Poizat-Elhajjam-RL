@@ -15,6 +15,7 @@ public struct Etat
     public int x, y;
     public float value;
     public codeAction strategie;
+    public MeshRenderer stratDisplayer;
 
     public Etat(int x, int y, bool arrivee)
     {
@@ -24,6 +25,7 @@ public struct Etat
 
         if (arrivee) value = 1000;
         else value = 0;
+        this.stratDisplayer = null;
     }
 
     public Etat(int x, int y, bool arrivee, codeAction uneStrategie)
@@ -34,6 +36,7 @@ public struct Etat
 
         if (arrivee) value = 1000;
         else value = 0;
+        this.stratDisplayer = null;
     }
 }
 
@@ -160,8 +163,6 @@ public class ValueIterationScript : MonoBehaviour
             }
         }
 
-        //affichage des résultats
-        DisplayResult();
     }
 
     public Etat getEtatFromPos(int x, int y)
@@ -195,24 +196,29 @@ public class ValueIterationScript : MonoBehaviour
         {
             for (int j = 0; j < largeurGrille; j++)
             {
-
-                codeAction temp = listeEtat[i, j].strategie;
-
-                var actions = getPossibleActions(listeEtat[i, j]);
-                List<float> scoresAction = new List<float>();
-
-                for (int z = 0; z < actions.Count; z++)
+                if (!(i == longueurGrille - 1 && j == largeurGrille - 1) && !(etatsPieges.Contains(listeEtat[i, j])))
                 {
-                    scoresAction[z] = GetStateValue(actions[z], listeEtat[i, j]);
-                }
 
-                float maxValue = Mathf.Max(scoresAction.ToArray()) ;
+                    codeAction temp = listeEtat[i, j].strategie;
 
-                listeEtat[i, j].strategie = actions[scoresAction.IndexOf(maxValue)];
+                    var actions = getPossibleActions(listeEtat[i, j]);
+                    List<float> scoresAction = new List<float>(actions.Count);
+                    Debug.Log(scoresAction.Count);
 
-                if (temp != listeEtat[i, j].strategie)
-                {
-                    policyStable = false;
+                    for (int z = 0; z < actions.Count; z++)
+                    {
+                        scoresAction.Add(GetStateValue(actions[z], listeEtat[i, j]));
+                    }
+
+                    float maxValue = Mathf.Max(scoresAction.ToArray());
+
+                    listeEtat[i, j].strategie = actions[scoresAction.IndexOf(maxValue)];
+
+                    if (temp != listeEtat[i, j].strategie)
+                    {
+                        policyStable = false;
+                    }
+
                 }
 
             }

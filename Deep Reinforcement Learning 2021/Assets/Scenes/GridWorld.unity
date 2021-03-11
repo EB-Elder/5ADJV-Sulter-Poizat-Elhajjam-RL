@@ -791,8 +791,8 @@ GameObject:
   m_Component:
   - component: {fileID: 257794869}
   - component: {fileID: 257794872}
-  - component: {fileID: 257794871}
   - component: {fileID: 257794870}
+  - component: {fileID: 257794871}
   m_Layer: 0
   m_Name: Plane (20)
   m_TagString: Untagged
@@ -2783,6 +2783,10 @@ MonoBehaviour:
   ia: {fileID: 1172409592}
   iaPositionX: 0
   iaPositionY: 0
+  textureHaut: {fileID: 2100000, guid: e3dd38838013c7b499f2eb61d4cad8dc, type: 2}
+  textureBas: {fileID: 2100000, guid: 55358ab3343ee93439bee845610dd20a, type: 2}
+  textureGauche: {fileID: 2100000, guid: 834d734be19df324481313e0dd52b897, type: 2}
+  textureDroite: {fileID: 2100000, guid: 6b31d310c36687945b693d829186e540, type: 2}
   plane00: {fileID: 304092602}
   plane01: {fileID: 75907044}
   plane02: {fileID: 1384621752}
@@ -2808,6 +2812,31 @@ MonoBehaviour:
   plane42: {fileID: 931125410}
   plane43: {fileID: 1568219691}
   plane44: {fileID: 1508751698}
+  strat00: {fileID: 257794871}
+  strat01: {fileID: 1101271671}
+  strat02: {fileID: 1000415412}
+  strat03: {fileID: 44486851}
+  strat04: {fileID: 1389007198}
+  strat10: {fileID: 131946211}
+  strat11: {fileID: 376687543}
+  strat12: {fileID: 550017324}
+  strat13: {fileID: 84986140}
+  strat14: {fileID: 1351529343}
+  strat20: {fileID: 1580498105}
+  strat21: {fileID: 781954090}
+  strat22: {fileID: 1686742328}
+  strat23: {fileID: 2057620758}
+  strat24: {fileID: 1731048235}
+  strat30: {fileID: 66734261}
+  strat31: {fileID: 1677147230}
+  strat32: {fileID: 1001026207}
+  strat33: {fileID: 457086651}
+  strat34: {fileID: 964413228}
+  strat40: {fileID: 1692614322}
+  strat41: {fileID: 1097314954}
+  strat42: {fileID: 145660084}
+  strat43: {fileID: 1091160518}
+  strat44: {fileID: 1723305268}
   IADecision: 0
 --- !u!4 &1172409591
 Transform:

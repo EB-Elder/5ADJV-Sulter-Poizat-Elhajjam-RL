@@ -14,6 +14,12 @@ public class GameRulerGridWorld : MonoBehaviour
     [SerializeField] private int iaPositionX;
     [SerializeField] private int iaPositionY;
 
+    public Material textureHaut;
+    public Material textureBas;
+    public Material textureGauche;
+    public Material textureDroite;
+
+
     [SerializeField] private TextMesh plane00;
     [SerializeField] private TextMesh plane01;
     [SerializeField] private TextMesh plane02;
@@ -43,6 +49,37 @@ public class GameRulerGridWorld : MonoBehaviour
     [SerializeField] private TextMesh plane42;
     [SerializeField] private TextMesh plane43;
     [SerializeField] private TextMesh plane44;
+
+
+    [SerializeField] private MeshRenderer strat00;
+    [SerializeField] private MeshRenderer strat01;
+    [SerializeField] private MeshRenderer strat02;
+    [SerializeField] private MeshRenderer strat03;
+    [SerializeField] private MeshRenderer strat04;
+                             
+    [SerializeField] private MeshRenderer strat10;
+    [SerializeField] private MeshRenderer strat11;
+    [SerializeField] private MeshRenderer strat12;
+    [SerializeField] private MeshRenderer strat13;
+    [SerializeField] private MeshRenderer strat14;
+                             
+    [SerializeField] private MeshRenderer strat20;
+    [SerializeField] private MeshRenderer strat21;
+    [SerializeField] private MeshRenderer strat22;
+    [SerializeField] private MeshRenderer strat23;
+    [SerializeField] private MeshRenderer strat24;
+                             
+    [SerializeField] private MeshRenderer strat30;
+    [SerializeField] private MeshRenderer strat31;
+    [SerializeField] private MeshRenderer strat32;
+    [SerializeField] private MeshRenderer strat33;
+    [SerializeField] private MeshRenderer strat34;
+                             
+    [SerializeField] private MeshRenderer strat40;
+    [SerializeField] private MeshRenderer strat41;
+    [SerializeField] private MeshRenderer strat42;
+    [SerializeField] private MeshRenderer strat43;
+    [SerializeField] private MeshRenderer strat44;
 
     public int IADecision = -1;
     
@@ -87,15 +124,99 @@ public class GameRulerGridWorld : MonoBehaviour
         plane44.text = ia.listeEtat[4, 4].value.ToString();
 
     }
-    
+
+    public void displayStratIG()
+    {
+        ia.listeEtat[0, 0].stratDisplayer = strat00;
+        ia.listeEtat[0, 1].stratDisplayer = strat01;
+        ia.listeEtat[0, 2].stratDisplayer = strat02;
+        ia.listeEtat[0, 3].stratDisplayer = strat03;
+        ia.listeEtat[0, 4].stratDisplayer = strat04;
+
+        ia.listeEtat[1, 0].stratDisplayer = strat10;
+        ia.listeEtat[1, 1].stratDisplayer = strat11;
+        ia.listeEtat[1, 2].stratDisplayer = strat12;
+        ia.listeEtat[1, 3].stratDisplayer = strat13;
+        ia.listeEtat[1, 4].stratDisplayer = strat14;
+
+        ia.listeEtat[2, 0].stratDisplayer = strat20;
+        ia.listeEtat[2, 1].stratDisplayer = strat21;
+        ia.listeEtat[2, 2].stratDisplayer = strat22;
+        ia.listeEtat[2, 3].stratDisplayer = strat23;
+        ia.listeEtat[2, 4].stratDisplayer = strat24;
+
+        ia.listeEtat[3, 0].stratDisplayer = strat30;
+        ia.listeEtat[3, 1].stratDisplayer = strat31;
+        ia.listeEtat[3, 2].stratDisplayer = strat32;
+        ia.listeEtat[3, 3].stratDisplayer = strat33;
+        ia.listeEtat[3, 4].stratDisplayer = strat34;
+
+        ia.listeEtat[4, 0].stratDisplayer = strat40;
+        ia.listeEtat[4, 1].stratDisplayer = strat41;
+        ia.listeEtat[4, 2].stratDisplayer = strat42;
+        ia.listeEtat[4, 3].stratDisplayer = strat43;
+        ia.listeEtat[4, 4].stratDisplayer = strat44;
+
+
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+
+                switch (ia.listeEtat[i,j].strategie)
+                {
+                    case codeAction.BAS:
+
+                        ia.listeEtat[i, j].stratDisplayer.material = textureBas;
+
+                        break;
+
+
+                    case codeAction.HAUT:
+
+                        ia.listeEtat[i, j].stratDisplayer.material= textureHaut;
+
+                        break;
+
+
+                    case codeAction.GAUCHE:
+
+                        ia.listeEtat[i, j].stratDisplayer.material = textureGauche;
+
+                        break;
+
+                    case codeAction.DROITE:
+
+                        ia.listeEtat[i, j].stratDisplayer.material = textureDroite;
+
+                        break;
+                }
+
+            }
+        }
+
+            
+    }
+
+        
     // Start is called before the first frame update
     void Start()
     {
         player.position = startingTile.position;
 
         ia.Initialisation();
-        ia.ValueIteration();
-        displayValueIG();
+
+
+
+        while(!(ia.PolicyImprovement()))
+        {
+            ia.policyEvaluation();
+
+        }
+
+        //ia.ValueIteration();
+        //displayValueIG();
+        displayStratIG();
     }
 
     void playerController()
@@ -275,7 +396,7 @@ public class GameRulerGridWorld : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {  
         if(!fini)
         {
@@ -300,8 +421,8 @@ public class GameRulerGridWorld : MonoBehaviour
                 UnityEditor.EditorApplication.isPlaying = false;
                 #else
                 Application.Quit();
-                #endif*/
+                #endif
             }
         }
-    }
+    }*/
 }
