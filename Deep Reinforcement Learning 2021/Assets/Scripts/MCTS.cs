@@ -78,7 +78,7 @@ struct gameStateTicTacToe
         isGameOver = false;
     }
 
-    public void next(int indexOfAction, List<states> listStates)
+    public void next(int indexOfAction, List<states> listStates, float epsilon)
     {
         if (isGameOver)
         {
@@ -100,14 +100,66 @@ struct gameStateTicTacToe
         
         if (board[choicesLeft[indexOfAction]].isColored == false)
         {
+            states testingState = actualState;
+            bool doContinue = true;
+            
             if (isBluePlaying)
             {
+                testingState.board[choicesLeft[indexOfAction]] = 1;
+                while (true)
+                {
+                    for (int i = 0; i < listStates.Count; i++)
+                    {
+                        doContinue = false;
+                        if (isBoardEqual(testingState, listStates[i]))
+                        {
+                            if (Random.Range(0, 100) < epsilon)
+                            {
+                                indexOfAction = Random.Range(0, choicesLeft.Count);
+                                doContinue = true;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                            
+                        }
+                    }
+                    if(!doContinue)
+                        break;
+                }
                 board[choicesLeft[indexOfAction]].playerOnePlaying(true);
                 isBluePlaying = false;
                 actualState.board[choicesLeft[indexOfAction]] = 1;
+                
             }
             else
             {
+                
+                testingState.board[choicesLeft[indexOfAction]] = 2;
+                while (true)
+                {
+                    for (int i = 0; i < listStates.Count; i++)
+                    {
+                        doContinue = false;
+                        if (isBoardEqual(testingState, listStates[i]))
+                        {
+                            if (Random.Range(0, 100) < epsilon)
+                            {
+                                indexOfAction = Random.Range(0, choicesLeft.Count);
+                                doContinue = true;
+                                break;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if(!doContinue)
+                        break;
+                }
                 board[choicesLeft[indexOfAction]].playerTwoPlaying(true);
                 isBluePlaying = true;
                 actualState.board[choicesLeft[indexOfAction]] = 2;
@@ -115,7 +167,6 @@ struct gameStateTicTacToe
 
             listStates.Add(actualState);
             choicesLeft.RemoveAt(indexOfAction);
-            actualState.printState();
         }
     }
 
@@ -155,11 +206,14 @@ public class MCTS : MonoBehaviour
     
     gameStateTicTacToe testGS;
     private List<states> _boardStates = new List<states>();
+    private float epsilon = 50;
+    
     public bool isGameOver = false;
+    
 
     public void initMCTS(List<int> possibleActions, List<CubeManager> newBoard)
     {
-        _boardStates.Add(new states());
+        _boardStates.Add(new states(null, 0, 0));
         testGS = new gameStateTicTacToe(possibleActions, newBoard);
     }
 
@@ -169,7 +223,7 @@ public class MCTS : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             int choosenIndex = Random.Range(0, testGS.choicesLeft.Count);
-            testGS.next(choosenIndex, _boardStates);
+            testGS.next(choosenIndex, _boardStates, epsilon);
             print(testGS.getBoardStatus());
         }
 
